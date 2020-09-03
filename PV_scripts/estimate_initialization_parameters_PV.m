@@ -1,5 +1,5 @@
 function [Cn,PNR]=estimate_initialization_parameters_PV(tmp_range)
-%[Cn,PNR]=estimate_initialization_parameters_PV([1,3000]);
+%[Cn,PNR]=estimate_initialization_parameters_PV([]);
 
 [file,path] = uigetfile('*.h5');
 in=h5info(strcat(path,file));
@@ -8,7 +8,8 @@ if isempty(tmp_range)
     tmp_range=[1,si(3)]
 end
 
-Y=h5read(strcat(path,file),'/Object',[1 1 tmp_range(1)],[si(1) si(2) tmp_range(2)-tmp_range(1)+1]);
+% Y=h5read(strcat(path,file),'/Object',[1 1 tmp_range(1)],[si(1) si(2) tmp_range(2)-tmp_range(1)+1]);
+Y=h5read(strcat(path,file),'/Object');
 cd(path)
 
 r=6;

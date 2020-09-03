@@ -5,7 +5,7 @@ function neuron=justdeconv(neuron,deconv_method,type)
 neuron.options.deconv_options.method =deconv_method;
 neuron.options.deconv_options.type =type;
 neuron.options.smin=0;
-
+neuron.C_raw(~isfinite(neuron.C_raw))=0;
 neuron.C = deconvTemporal(neuron, 1);
 
 

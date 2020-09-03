@@ -7,6 +7,7 @@ function nam_mat = tif2mat(nam)
 % Author: Pengcheng Zhou, Carnegie Mellon University
 
 %% tiff file information 
+warning('off','all')
 if isempty(nam)
     nam_mat = [];
     fprintf('empty tiff file');
