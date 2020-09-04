@@ -150,20 +150,20 @@ for k=1:length(theFiles)
     neuron.P=neuron.batches{1, 1}.neuron.P;
     neuron.frame_range=[1,size(neuron.C_raw,2)];
     
-    neuron=justdeconv(neuron,'thresholded','ar2'); % you can change this to foopsi   
+    neuron=justdeconv(neuron,'foopsi','ar2'); % you can change this to foopsi   
     fix_Baseline(round(40*neuron.Fs),neuron)%% PV this may not be necessary, but can be useful to correct for slow fluctuation in the calcium traces when recordings are very long
     %sometimes it decrease the amount of false-positives spikes. 
     
 
     scale_to_noise(neuron,500); %this is to fix the differences in the basline noise level across batches.
-    neuron=justdeconv(neuron,'thresholded','ar2');
+    neuron=justdeconv(neuron,'foopsi','ar2');
 
     neuron.merge_neurons_dist_corr(0);
     neuron.merge_high_corr(0, [0.6, -1, -inf]);
     
     for i=1:3 %Running this may fix problems ralated to shifts in baseline noise across batches
     scale_to_noise(neuron,200); 
-    neuron=justdeconv(neuron,'thresholded','ar2');
+    neuron=justdeconv(neuron,'foopsi','ar2');
     end
 
     neuron.orderROIs('snr'); 
@@ -189,7 +189,7 @@ end
 %% To save results in a new path run these lines a choose the new folder:
 %   neuron.P.log_file=strcat(uigetdir,filesep,'log_',date,'.txt');
 %   neuron.P.log_folder=strcat(uigetdir,'\'); %update the folder
-
+%   cnmfe_path = neuron.save_workspace();   
 %% To visualize neurons contours:
 %   neuron.Coor=[]
 %   neuron.show_contours(0.6, [], neuron.PNR, 0)  %PNR
@@ -204,5 +204,9 @@ end
 %% to visualize all temporal traces
 %   strips(neuron.C_raw');   
 %   stackedplot(neuron.C_raw');  
+
+%% Manually merge very close neurons
+% neuron.merge_high_corr(1, [0.1, -1, -inf]);
+
 
 

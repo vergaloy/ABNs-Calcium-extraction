@@ -15,20 +15,16 @@ for i=1:size(theFiles,1)
 %     [Coor, PNR] = correlation_image_endoscope_PV2(temp,4);
     Cn{i}=mean(temp,3);   
 end
-fprintf(1, 'Calculating  best alignment...\n');
-
 X=catpad(3,Cn{:});
 X=remove_borders(X);
 X=filter_image(X);
 options_rigid = NoRMCorreSetParms('d1',size(X,1),'d2',size(X,2),'d3',1,'max_shift',100,'init_batch',1);
-[~,shifts,~,~] = normcorre_test(X,options_rigid);
+[M,shifts,~,~] = normcorre_test(X,options_rigid);
+M=remove_borders(M);
 out=align(Vid,shifts);
 out=catpad(3,out{:});
 out=remove_borders(out);
-%%
-savdic=strcat(myFolder,'\concatenated_',datestr(now,'yymmddHHMMSS'),'.h5');
-fprintf(1, 'Finished! Saving as %s\n', savdic);
-saveash5(uint16(out),savdic);
+saveash5(uint16(out),strcat(myFolder,'\concatenated_',datestr(now,'yymmddHHMMSS'),'.h5'));
 end
 
 function out=filter_image(in)

@@ -32,8 +32,8 @@ for k=1:length(theFiles)
     %%
     fprintf('Converting TIFF file to *.h5 file');
     
-    Tchunk = min(T, round(2^29/d1/d2)); %each chunk uses at most 4GB
-    lin=round(linspace(1,T,ceil(T/Tchunk)));
+     Tchunk = min(T, round(2^29/d1/d2)); %each chunk uses at most 4GB
+    lin=round(linspace(1,T+1,ceil(T/Tchunk)+1));
     for i=2:length(lin)
         warning('off','all')
         num2read = lin(i)-lin(i-1);
@@ -41,9 +41,9 @@ for k=1:length(theFiles)
         tmpY{i} = smod_bigread2(nam, t0, num2read);
     end
     
-    Y=catpad(3,tmpY{:});
+    Y=uint16(catpad(3,tmpY{:}));
     %%
-    saveash5(Y,nam_h5);
+    saveash5(Y(:,:,2:end),nam_h5);
 end
 
 
